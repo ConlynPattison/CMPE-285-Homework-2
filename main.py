@@ -36,7 +36,12 @@ def input_handler() -> str:
 
 def fetch_stock_details(symbol: str) -> dict | None:
     ticker = yf.Ticker(symbol)
-    info = ticker.info
+
+    try:
+        info = ticker.info
+    except Exception as e:
+        print("Network not available, please try again later.")
+        exit(1)
 
     # Info not present for non-equity tickers (e.g., ETF, mutual fund, etc.)
     if not info["quoteType"] == "EQUITY":
